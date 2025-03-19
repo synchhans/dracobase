@@ -36,13 +36,13 @@ const Hero = () => {
         </p>
         <div className="flex flex-col justify-center space-y-4 mt-8 sm:flex-row sm:space-y-0 sm:space-x-4">
           <Link
-            href="/login"
+            href="#usecase"
             className="px-6 py-3 text-sm font-medium text-white bg-blue-600 rounded sm:text-base hover:bg-blue-700"
           >
             Memulai
           </Link>
           <Link
-            href="#usecase"
+            href="#features"
             className="px-6 py-3 text-sm font-medium text-gray-600 border rounded sm:text-base hover:bg-gray-100"
           >
             Pelajari lebih lanjut

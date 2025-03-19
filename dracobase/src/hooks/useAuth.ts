@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { User } from "@/types/user.types";
-import { verifyUser } from "@/app/api/auth";
+import { logout, verifyUser } from "@/app/api/auth";
 
-export const useAuth = () => {
+export const useAuth = (shouldRedirect: boolean = true) => {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isAuthorized, setIsAuthorized] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isAuthorized, setIsAuthorized] = useState(false);
 
   const checkAuthStatus = async () => {
     setIsLoading(true);
@@ -16,7 +16,9 @@ export const useAuth = () => {
       const userData = await verifyUser();
 
       if (!userData) {
-        router.push("/login");
+        if (shouldRedirect) {
+          router.push("/login");
+        }
         return;
       }
 
@@ -30,27 +32,20 @@ export const useAuth = () => {
   };
 
   const handleLogout = async () => {
+    setIsLoading(true);
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`,
-        {
-          method: "POST",
-          credentials: "include",
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to logout");
-      }
+      await logout();
 
       setUser(null);
       setIsAuthorized(false);
       setError(null);
 
-      router.push("/login");
+      router.push("/");
     } catch (err) {
       console.error("Logout failed:", err);
       setError((err as Error).message || "Failed to logout. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 

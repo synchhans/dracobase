@@ -1,13 +1,14 @@
 "use client";
 
 import useGuest from "@/hooks/useGuest";
-import ErrorHandler from "../../../components/layout/ErrorHandler";
-import LoadingSpinner from "../../../components/layout/LoadingSpinner";
+import ErrorHandler from "../../../components/common/ErrorHandler";
+import LoadingSpinner from "../../../components/common/LoadingSpinner";
 import HeaderLogin from "@/app/(auth)/login/components/HeaderLogin";
 import ButtonLoginWith from "@/components/common/ButtonLoginWith";
 import FooterLogin from "@/app/(auth)/login/components/FooterLogin";
 import LoginForm from "./components/LoginForm";
 import { useEffect, useState } from "react";
+import { openPopup } from "@/utils/popupUtils";
 
 export default function Login() {
   const {
@@ -19,17 +20,19 @@ export default function Login() {
     isProfileComplete,
   } = useGuest();
   const [showEditProfile, setShowEditProfile] = useState(false);
-
-  const openPopup = (url: string) => {
-    window.open(url, "_blank", "width=600,height=800");
-  };
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
   useEffect(() => {
     const handleMessage = async (event: MessageEvent) => {
       if (event.data === "AUTH_SUCCESS") {
-        await refetchUser();
-        setShowEditProfile(true);
+        try {
+          await refetchUser();
+          setShowEditProfile(true);
+        } catch (err) {
+          console.error("Error during refetch:", err);
+        }
       } else if (event.data === "REDIRECT_DASHBOARD") {
+        setIsRedirecting(true);
         window.location.href = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/dashboard`;
       }
     };
@@ -38,7 +41,18 @@ export default function Login() {
     return () => {
       window.removeEventListener("message", handleMessage);
     };
-  }, []);
+  }, [refetchUser]);
+
+  useEffect(() => {
+    if (
+      isProfileComplete &&
+      !isRedirecting &&
+      window.location.pathname === "/login"
+    ) {
+      setIsRedirecting(true);
+      window.location.href = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/dashboard`;
+    }
+  }, [isProfileComplete, isRedirecting]);
 
   if (error) {
     return (
@@ -46,12 +60,7 @@ export default function Login() {
     );
   }
 
-  if (isProfileComplete && window.location.pathname === "/login") {
-    window.location.href = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/dashboard`;
-    return <LoadingSpinner />;
-  }
-
-  if (isLoading) {
+  if (isLoading || isRedirecting) {
     return <LoadingSpinner />;
   }
 

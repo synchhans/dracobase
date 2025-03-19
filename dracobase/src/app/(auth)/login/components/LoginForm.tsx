@@ -3,7 +3,7 @@
 import Image from "next/image";
 import useLoginFormSubmit from "@/hooks/useLoginFormSubmit";
 import { LoginFormProps } from "@/types/loginForm.types";
-import ErrorHandler from "../../../../components/layout/ErrorHandler";
+import ErrorHandler from "../../../../components/common/ErrorHandler";
 
 export default function LoginForm({ user, handleUpdateUser }: LoginFormProps) {
   const {

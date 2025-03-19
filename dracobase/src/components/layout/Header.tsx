@@ -3,9 +3,13 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { HeaderProps } from "@/types/header.types";
+import { useAuth } from "@/hooks/useAuth";
+import LoadingSpinner from "../common/LoadingSpinner";
+import ErrorHandler from "../common/ErrorHandler";
 
 const Header = ({ navLinks }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isAuthorized, isLoading, error } = useAuth(false);
 
   const defaultNavLinks = [
     { href: "#features", label: "Fitur" },
@@ -13,7 +17,8 @@ const Header = ({ navLinks }: HeaderProps) => {
     { href: "/support", label: "Dukungan" },
   ];
 
-  const links = navLinks || defaultNavLinks;
+  const links =
+    Array.isArray(navLinks) && navLinks.length > 0 ? navLinks : defaultNavLinks;
 
   const menuVariants = {
     hidden: { opacity: 0, y: -20, display: "none" },
@@ -44,10 +49,24 @@ const Header = ({ navLinks }: HeaderProps) => {
     setIsMenuOpen(false);
   };
 
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
+  if (error) {
+    return (
+      <ErrorHandler message={error!} onRetry={() => window.location.reload()} />
+    );
+  }
+
   return (
     <header className="sticky top-0 z-50 flex items-center justify-between px-6 py-4 bg-white shadow-md">
       <div className="flex items-center space-x-4">
-        <Link href="/" className="flex items-center space-x-2 mr-16">
+        <Link
+          href="/"
+          aria-label="Homepage"
+          className="flex items-center space-x-2 mr-16"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="w-8 h-8 text-blue-600"
@@ -74,15 +93,24 @@ const Header = ({ navLinks }: HeaderProps) => {
       </div>
 
       <div className="hidden md:flex items-center space-x-4">
-        <Link
-          href="/login"
-          className="px-4 py-2 text-gray-600 border rounded hover:bg-gray-100 transition duration-300"
-        >
-          Login
-        </Link>
+        {isAuthorized ? (
+          <Link
+            href="/dashboard"
+            className="px-4 py-2 text-gray-600 border rounded hover:bg-gray-100 transition duration-300"
+          >
+            Dashboard
+          </Link>
+        ) : (
+          <Link
+            href="/login"
+            className="px-4 py-2 text-gray-600 border rounded hover:bg-gray-100 transition duration-300"
+          >
+            Login
+          </Link>
+        )}
         <Link
           href="/support/#contact"
-          className="px-4 py-2 text-white bg-gradient-to-r from-blue-600 to-indigo-600 rounded hover:from-blue-700 hover:to-indigo-700 transition duration-300"
+          className="px-4 py-2 text-white bg-gradient-to-r from-blue-600 to-indigo-600 rounded hover:from-blue-700 hover:to-indigo-700 shadow-md transition-all duration-300 transform hover:scale-105"
         >
           Contact Us
         </Link>
@@ -123,7 +151,7 @@ const Header = ({ navLinks }: HeaderProps) => {
             animate="visible"
             exit="exit"
             variants={menuVariants}
-            className="absolute top-20 right-0 w-full bg-white shadow-lg rounded-lg py-4 px-6 md:hidden"
+            className="absolute top-20 right-0 w-full bg-white shadow-lg rounded-lg py-4 px-6 md:hidden z-50 menu"
           >
             <nav className="space-y-4">
               {links.map((link, index) => (

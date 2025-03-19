@@ -72,3 +72,22 @@ export const verifyUser = async (): Promise<User | null> => {
     throw err;
   }
 };
+
+export const logout = async (): Promise<void> => {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`,
+      {
+        method: "POST",
+        credentials: "include",
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to logout");
+    }
+  } catch (err) {
+    console.error((err as Error).message || "An unexpected error occurred.");
+    throw err;
+  }
+};

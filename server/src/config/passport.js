@@ -24,7 +24,6 @@ passport.deserializeUser(async (id, done) => {
   }
 });
 
-// Google Strategy
 passport.use(
   new GoogleStrategy(
     {
@@ -59,7 +58,6 @@ passport.use(
   )
 );
 
-// GitHub Strategy
 passport.use(
   new GitHubStrategy(
     {
