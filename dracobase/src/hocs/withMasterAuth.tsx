@@ -18,7 +18,7 @@ const withMasterAuth = (contentMap: MainDashoardProps["contentMap"]) => {
       }
     }, [user, router]);
 
-    if (isLoading || !isAuthorized) {
+    if (isLoading || !isAuthorized || user?.level !== "admin") {
       return <LoadingSpinner />;
     }
 
@@ -31,10 +31,6 @@ const withMasterAuth = (contentMap: MainDashoardProps["contentMap"]) => {
           }}
         />
       );
-    }
-
-    if (user?.level !== "admin") {
-      return <LoadingSpinner />;
     }
 
     return (

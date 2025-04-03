@@ -14,7 +14,7 @@ export default function useLoginFormSubmit(
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    if (!firstName || !role || !plan) {
+    if (!firstName || !lastName || !role || !plan) {
       return;
     }
 
@@ -26,6 +26,7 @@ export default function useLoginFormSubmit(
         role,
         plan,
       });
+      
     } catch (error) {
       setError((error as Error).message || "Error updating user");
       console.error("Error updating user:", error);

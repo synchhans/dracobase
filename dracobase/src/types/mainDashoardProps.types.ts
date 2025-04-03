@@ -1,8 +1,8 @@
-import { JSX } from "react";
+import { ReactNode } from "react";
 import { User } from "./user.types";
 
 interface ContentMap {
-  [key: string]: JSX.Element;
+  [key: string]: React.ComponentType<{ user: User }>;
 }
 
 export interface MainDashoardProps {

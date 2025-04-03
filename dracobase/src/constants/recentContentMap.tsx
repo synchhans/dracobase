@@ -9,6 +9,6 @@ const RecentMaster = dynamic(
 );
 
 export const recentContentMap = {
-  "/dashboard": <RecentContent />,
-  "/master": <RecentMaster />,
+  "/dashboard": RecentContent,
+  "/master": RecentMaster,
 };

@@ -85,12 +85,12 @@ export default function HeaderDashboard({
           <Image src={"/logo.svg"} alt="Logo" width={30} height={30} priority />
         </a>
         <p className="cursor-pointer px-1.5 hover:bg-gray-100 rounded-xs hidden md:block">
-          {user.email ? user.email : user.githubUsername}
+          {user.displayName ? user.displayName : user.githubUsername}
         </p>
       </div>
 
       <div className="inline-flex gap-x-3 items-center">
-        <LanguageModal />
+        <LanguageModal role={user.level} />
 
         <div className="relative inline-block" ref={notificationRef}>
           <button

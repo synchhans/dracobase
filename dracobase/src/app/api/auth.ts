@@ -1,13 +1,12 @@
 import { User } from "@/types/user.types";
 
+const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/auth`;
+
 export const fetchUser = async (): Promise<User | null> => {
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/auth/me`,
-      {
-        credentials: "include",
-      }
-    );
+    const response = await fetch(`${API_URL}/me`, {
+      credentials: "include",
+    });
 
     if (!response.ok) {
       throw new Error("Failed to fetch user data");
@@ -24,15 +23,14 @@ export const fetchUser = async (): Promise<User | null> => {
 
 export const updateUser = async (userData: User): Promise<void> => {
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/auth/update`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify(userData),
-      }
-    );
+    const response = await fetch(`${API_URL}/update`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    });
 
     if (!response.ok) {
       throw new Error("Failed to update user data");
@@ -45,12 +43,9 @@ export const updateUser = async (userData: User): Promise<void> => {
 
 export const verifyUser = async (): Promise<User | null> => {
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/dashboard`,
-      {
-        credentials: "include",
-      }
-    );
+    const response = await fetch(`${API_URL}/dashboard`, {
+      credentials: "include",
+    });
 
     if (response.status === 401 || response.status === 403) {
       return null;
@@ -75,13 +70,10 @@ export const verifyUser = async (): Promise<User | null> => {
 
 export const logout = async (): Promise<void> => {
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`,
-      {
-        method: "POST",
-        credentials: "include",
-      }
-    );
+    const response = await fetch(`${API_URL}/logout`, {
+      method: "POST",
+      credentials: "include",
+    });
 
     if (!response.ok) {
       throw new Error("Failed to logout");

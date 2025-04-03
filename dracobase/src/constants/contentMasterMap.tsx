@@ -8,6 +8,6 @@ const ProgrammingContent = dynamic(
 );
 
 export const contentMasterMap = {
-  "/account": <AccountContent />,
-  "/programming": <ProgrammingContent />,
+  "/account": AccountContent,
+  "/programming": ProgrammingContent,
 };

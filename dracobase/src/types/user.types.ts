@@ -1,4 +1,5 @@
 export interface User {
+  _id: string;
   googleId?: string;
   githubId?: string;
   email: string;
@@ -12,4 +13,6 @@ export interface User {
   plan: string;
   isProfileComplete: boolean;
   level: string;
+  status: string;
+  createdAt: string;
 }

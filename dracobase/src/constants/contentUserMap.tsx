@@ -11,7 +11,7 @@ const RecentlyDeletedContent = dynamic(
 );
 
 export const contentUserMap = {
-  "/get-started": <GetStartedContent />,
-  "/setting": <SettingContent />,
-  "/deleted": <RecentlyDeletedContent />,
+  "/get-started": GetStartedContent,
+  "/setting": SettingContent,
+  "/deleted": RecentlyDeletedContent,
 };

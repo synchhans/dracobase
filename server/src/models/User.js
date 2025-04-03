@@ -58,6 +58,12 @@ const userSchema = new mongoose.Schema(
       default: "user",
     },
 
+    status: {
+      type: String,
+      enum: ["active", "nonactive"],
+      default: "active",
+    },
+
     createdAt: {
       type: Date,
       default: Date.now,
@@ -66,6 +72,42 @@ const userSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
+    recentLanguages: [
+      {
+        languageId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Language",
+        },
+        accessedAt: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
+    deletedLanguages: [
+      {
+        languageId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Language",
+        },
+        deletedAt: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
+    completedChallenges: [
+      {
+        challengeId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Challenge",
+        },
+        completedAt: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );

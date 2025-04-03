@@ -2,6 +2,8 @@ import express from "express";
 import passport from "passport";
 import authLimiter from "../middlewares/rateLimitMiddleware.js";
 import { getMe, updateProfile, logout } from "../controllers/authController.js";
+import isProfileCompleted from "../middlewares/isProfileCompleted.js";
+import { fetchDataUser } from "../controllers/userController.js";
 
 const authRouter = express.Router();
 
@@ -66,6 +68,7 @@ authRouter.get(
 );
 
 authRouter.get("/me", getMe);
+authRouter.get("/dashboard", isProfileCompleted, fetchDataUser);
 authRouter.post("/update", updateProfile);
 authRouter.post("/logout", logout);
 

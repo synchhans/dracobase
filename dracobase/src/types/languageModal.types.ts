@@ -1,8 +1,6 @@
-import { JSX } from "react";
-
 export interface Language {
   name: string;
-  icon: JSX.Element;
+  icon: string;
   description: string;
   categories: string[];
   link: string;

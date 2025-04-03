@@ -1,7 +1,7 @@
 import { MainDashoardProps } from "@/types/mainDashoardProps.types";
 import SidebarDashboard from "./SidebarDashboard";
 import { usePathname } from "next/navigation";
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FaBars } from "react-icons/fa";
 
 export default function MainDashboard({ user, contentMap }: MainDashoardProps) {
@@ -11,7 +11,12 @@ export default function MainDashboard({ user, contentMap }: MainDashoardProps) {
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   const getContent = () => {
-    return contentMap[pathname] || <div>Content Not Allowed</div>;
+    const ContentComponent = contentMap[pathname];
+    if (!ContentComponent) {
+      return <div>Content Not Allowed</div>;
+    }
+
+    return React.createElement(ContentComponent, { user });
   };
 
   useEffect(() => {

@@ -2,8 +2,9 @@ import { fetchUser, updateUser } from "@/app/api/auth";
 import { User } from "@/types/user.types";
 import { useRouter } from "next/navigation";
 import { useState, useEffect, useCallback } from "react";
+import { toast } from "react-toastify";
 
-export default function useGuest() {
+export default function useGuest(isRedirect: boolean = true) {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [isProfileComplete, setIsProfileComplete] = useState(false);
@@ -25,7 +26,10 @@ export default function useGuest() {
       if (profileComplete) {
         setIsProfileComplete(true);
 
-        if (window.location.pathname !== "/dashboard") {
+        if (
+          window.location.pathname !== "/dashboard" &&
+          window.location.pathname !== "/setting"
+        ) {
           router.push("/dashboard");
         }
         return;
@@ -47,8 +51,12 @@ export default function useGuest() {
     setIsLoading(true);
     try {
       await updateUser(userData);
-
-      window.location.href = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/dashboard`;
+      toast.success("Profile updated successfully");
+      if (isRedirect) {
+        window.location.href = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/dashboard`;
+      }else{
+        window.location.reload();
+      }
     } catch (err) {
       setError((err as Error).message || "An unexpected error occurred.");
     } finally {
