@@ -1,12 +1,21 @@
 import useLanguages from "@/hooks/useLanguages";
+import useWorkspaces from "@/hooks/useWorkspaces";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { FaCode, FaEdit, FaEllipsisV, FaTimes, FaTrash } from "react-icons/fa";
 import { toast } from "react-toastify";
 import CULanguageModal from "./CULanguageModal";
 
-export default function LanguageModal({ role }: { role: String }) {
+export default function LanguageModal({
+  role,
+  userId,
+}: {
+  role: string;
+  userId: string;
+}) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isWorkspaceModalOpen, setIsWorkspaceModalOpen] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState<any | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [activeCategories, setActiveCategories] = useState<string[]>([]);
   const [isCUDModalOpen, setIsCUDModalOpen] = useState(false);
@@ -14,6 +23,7 @@ export default function LanguageModal({ role }: { role: String }) {
   const [dropdownIndex, setDropdownIndex] = useState<number | null>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const { languages, deleteLanguage } = useLanguages();
+  const { createWorkspace, loading } = useWorkspaces();
 
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
@@ -58,10 +68,48 @@ export default function LanguageModal({ role }: { role: String }) {
     );
   };
 
+  const handleLanguageSelect = (language: any) => {
+    setSelectedLanguage(language);
+    setIsWorkspaceModalOpen(true);
+  };
+
+  const closeWorkspaceModal = () => {
+    setIsWorkspaceModalOpen(false);
+    setSelectedLanguage(null);
+    window.location.reload();
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+    const workspaceName = formData.get("workspaceName") as string;
+    const description = formData.get("description") as string;
+
+    if (!workspaceName || !selectedLanguage) {
+      toast.error("Nama workspace dan bahasa wajib diisi.");
+      return;
+    }
+
+    try {
+      await createWorkspace(
+        userId,
+        workspaceName,
+        description,
+        selectedLanguage._id
+      );
+
+      toast.success("Workspace berhasil dibuat!");
+      closeWorkspaceModal();
+    } catch (err: any) {
+      toast.error(`Gagal membuat workspace: ${err.message}`);
+    }
+  };
+
   return (
     <>
       <button
-        className="inline-flex items-center gap-x-2 py-2 px-4 rounded-md text-sm font-medium bg-blue-500 text-white hover:bg-blue-600 transition-colors cursor-pointer"
+        className="inline-flex items-center gap-x-2 md:py-1 lg:py-2 px-4 rounded-md text-sm font-medium bg-blue-500 text-white hover:bg-blue-600 transition-colors cursor-pointer"
         onClick={openModal}
       >
         <FaCode className="w-5 h-5" />
@@ -129,19 +177,15 @@ export default function LanguageModal({ role }: { role: String }) {
               </div>
             </div>
 
-            {/* Language List */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pb-10">
               {filteredLanguages.length > 0 ? (
                 filteredLanguages.map((language, index) => (
                   <div
                     key={index}
                     className="flex items-center justify-between py-4 px-1 border border-gray-200 rounded-lg hover:shadow-lg transition-shadow cursor-pointer"
+                    onClick={() => handleLanguageSelect(language)}
                   >
-                    <a
-                      href={`/pemrograman/${language.link}`}
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-x-4 flex-grow"
-                    >
+                    <div className="flex items-center gap-x-4 flex-grow">
                       <div className="flex-shrink-0 relative w-10 h-10">
                         <Image
                           src={language.icon}
@@ -160,7 +204,7 @@ export default function LanguageModal({ role }: { role: String }) {
                           {language.description}
                         </p>
                       </div>
-                    </a>
+                    </div>
                     {role === "admin" && (
                       <div className="relative">
                         <button
@@ -216,6 +260,95 @@ export default function LanguageModal({ role }: { role: String }) {
                 </div>
               )}
             </div>
+          </div>
+        </div>
+      )}
+
+      {isWorkspaceModalOpen && selectedLanguage && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center backdrop-brightness-50"
+          onClick={closeWorkspaceModal}
+        >
+          <div
+            className="bg-white w-full max-w-lg p-6 sm:p-8 rounded-2xl shadow-2xl relative overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
+                Buat Workspace Baru
+              </h2>
+              <button
+                className="text-gray-500 hover:text-gray-700 focus:outline-none text-xl cursor-pointer"
+                onClick={closeWorkspaceModal}
+              >
+                &times;
+              </button>
+            </div>
+
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold text-gray-800">
+                Bahasa Pemrograman:
+              </h3>
+              <div className="flex items-center gap-x-4 mt-2">
+                <div className="flex-shrink-0 relative w-10 h-10">
+                  <Image
+                    src={selectedLanguage.icon}
+                    alt={`Icon ${selectedLanguage.name}`}
+                    fill
+                    priority
+                    className="object-contain"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
+                </div>
+                <div>
+                  <h4 className="font-medium text-gray-800">
+                    {selectedLanguage.name}
+                  </h4>
+                  <p className="text-sm text-gray-600">
+                    {selectedLanguage.description}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <form onSubmit={handleSubmit}>
+              <div className="mb-4">
+                <label
+                  htmlFor="workspaceName"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Nama Workspace
+                </label>
+                <input
+                  type="text"
+                  id="workspaceName"
+                  name="workspaceName"
+                  required
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+              <div className="mb-4">
+                <label
+                  htmlFor="description"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Deskripsi (Opsional)
+                </label>
+                <textarea
+                  id="description"
+                  name="description"
+                  rows={3}
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors disabled:bg-gray-300"
+              >
+                {loading ? "Membuat Workspace..." : "Buat Workspace"}
+              </button>
+            </form>
           </div>
         </div>
       )}

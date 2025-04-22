@@ -1,6 +1,7 @@
+import { User } from "@/types/user.types";
 import React, { useState } from "react";
 
-export default function DocumentationPage() {
+export default function DocumentationPage({ user }: { user: User }) {
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const [activeSubSection, setActiveSubSection] = useState<string | null>(null);
 

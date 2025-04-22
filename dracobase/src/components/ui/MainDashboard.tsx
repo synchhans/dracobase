@@ -43,7 +43,7 @@ export default function MainDashboard({ user, contentMap }: MainDashoardProps) {
     <div className="flex h-[calc(100vh-56px)]">
       <button
         ref={buttonRef}
-        className="md:hidden p-4 bg-gray-100 text-gray-700 fixed top-0 left-0 z-49 cursor-pointer"
+        className="md:hidden p-4 bg-transparent text-gray-700 fixed top-0 left-0 z-49 cursor-pointer"
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
       >
         <FaBars className="text-xl" />

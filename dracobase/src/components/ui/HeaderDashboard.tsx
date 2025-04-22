@@ -90,7 +90,7 @@ export default function HeaderDashboard({
       </div>
 
       <div className="inline-flex gap-x-3 items-center">
-        <LanguageModal role={user.level} />
+        <LanguageModal userId={user._id} role={user.level} />
 
         <div className="relative inline-block" ref={notificationRef}>
           <button

@@ -58,7 +58,7 @@ export default function SettingContent({ user }: { user: User }) {
                 </label>
                 <input
                   type="text"
-                  value={user.firstName}
+                  value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                   className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
                 />

@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 const userProgressSchema = new mongoose.Schema(
   {
     userId: {
@@ -10,26 +12,27 @@ const userProgressSchema = new mongoose.Schema(
       ref: "Language",
       required: true,
     },
-    isCompleted: {
-      type: Boolean,
-      default: false,
+    workspaceId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Workspace",
+      required: true,
+    },
+    activeMaterialIndex: {
+      type: Number,
+      default: 0,
+    },
+    completedMaterialIndexes: {
+      type: [Number],
+      default: [],
     },
     lastAccessed: {
       type: Date,
       default: Date.now,
     },
-    completedMaterials: [
-      {
-        materialId: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Language.materials",
-        },
-        completedAt: {
-          type: Date,
-          default: Date.now,
-        },
-      },
-    ],
+    isCompleted: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

@@ -1,5 +1,6 @@
 export const fetchDataUser = (req, res) => {
   const {
+    _id,
     displayName,
     firstName,
     lastName,
@@ -16,6 +17,7 @@ export const fetchDataUser = (req, res) => {
   res.json({
     status: 200,
     user: {
+      _id,
       displayName,
       firstName,
       lastName,
