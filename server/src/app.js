@@ -49,6 +49,10 @@ import accountRouter from "./routes/accountRouter.js";
 import workspaceRouter from "./routes/workspaceRouter.js";
 import recentRouter from "./routes/recentRouter.js";
 import progressRouter from "./routes/progressRouter.js";
+import codeRouter from "./routes/codeRouter.js";
+import executionLogRouter from "./routes/executionLogRouter.js";
+import aiFeedbackRouter from "./routes/aiFeedbackRouter.js";
+import debuggingRouter from "./routes/debuggingRouter.js";
 
 app.use("/api/auth", authRoutes);
 app.use("/api/dashboard", dashboardRouter);
@@ -58,6 +62,10 @@ app.use("/api/account", accountRouter);
 app.use("/api/workspaces", workspaceRouter);
 app.use("/api/recent", recentRouter);
 app.use("/api/progress", progressRouter);
+app.use("/api/code", codeRouter);
+app.use("/api/executionlog", executionLogRouter);
+app.use("/api/aifeedback", aiFeedbackRouter);
+app.use("/api/debugging", debuggingRouter);
 
 app.use(errorHandler);
 

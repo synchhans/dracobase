@@ -10,10 +10,10 @@ export default async function NotFound() {
       </p>
 
       <Link
-        href="/"
+        href="/dashboard"
         className="mt-8 px-6 py-3 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-700 transition duration-300"
       >
-        Back to Home
+        Back to Dashboard
       </Link>
     </div>
   );

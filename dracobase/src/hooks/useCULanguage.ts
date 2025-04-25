@@ -20,7 +20,6 @@ export default function useCULanguage({
           icon: "",
           description: "",
           categories: [],
-          link: "",
           materials: [],
           published: false,
         }
@@ -30,7 +29,6 @@ export default function useCULanguage({
     name: "Nama bahasa wajib diisi.",
     icon: "URL ikon wajib diisi.",
     description: "Deskripsi wajib diisi.",
-    link: "Link wajib diisi.",
     categories: "Minimal 1 kategori harus dipilih.",
     materials: "Minimal 1 materi harus ditambahkan.",
   });
@@ -50,9 +48,6 @@ export default function useCULanguage({
     }
     if (!data.description.trim()) {
       errors.description = "Deskripsi wajib diisi.";
-    }
-    if (!data.link.trim()) {
-      errors.link = "Link halaman materi wajib diisi.";
     }
     if (data.categories.length === 0) {
       errors.categories = "Minimal 1 kategori harus dipilih.";

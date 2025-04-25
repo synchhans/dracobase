@@ -60,25 +60,20 @@ export const getWorkspaceById = async (id) => {
 
 export const deleteWorkspace = async (workspaceId) => {
   try {
-    // Step 1: Temukan workspace berdasarkan ID
     const workspace = await Workspace.findById(workspaceId);
     if (!workspace) {
       throw new Error("Workspace not found");
     }
 
-    // Step 2: Cari entri di model Recent yang terkait dengan workspaceId
     const recentEntries = await Recent.find({ workspaceId });
     if (recentEntries.length === 0) {
       throw new Error("No recent entries found for this workspace");
     }
 
-    // Step 3: Hapus entri di model UserProgress yang terkait dengan workspaceId
     await UserProgress.deleteMany({ workspaceId });
 
-    // Step 4: Hapus workspace itu sendiri
     await Workspace.findByIdAndDelete(workspaceId);
 
-    // Step 5: Hapus entri di model Recent yang terkait dengan workspaceId
     await Recent.deleteMany({ workspaceId });
 
     return { message: "Workspace and related data deleted successfully" };

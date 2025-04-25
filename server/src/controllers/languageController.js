@@ -1,17 +1,20 @@
+import Language from "../models/Language.js";
 import {
   addLanguage,
-  deleteLanguage,
+  deleteLanguageById,
   getAllLanguages,
   updateLanguage,
 } from "../services/languageService.js";
+import { deleteProgressByLanguageId } from "../services/progressService.js";
+import { deleteRecentByLanguageId } from "../services/recentService.js";
 
 export const addLanguageController = async (req, res, next) => {
   try {
-    const { name, icon, description, link, categories, materials } = req.body;
+    const { name, icon, description, categories, materials } = req.body;
 
-    if (!name || !icon || !description || !link) {
+    if (!name || !icon || !description) {
       return res.status(400).json({
-        message: "Nama, ikon, deskripsi, dan link halaman materi wajib diisi.",
+        message: "Nama, ikon, dan deskripsi wajib diisi.",
       });
     }
 
@@ -23,10 +26,21 @@ export const addLanguageController = async (req, res, next) => {
 
     if (
       !Array.isArray(materials) ||
-      materials.some((material) => !material.title || !material.content)
+      materials.some(
+        (material) =>
+          !material.title ||
+          !Array.isArray(material.contentBlocks) ||
+          material.contentBlocks.some(
+            (block) =>
+              !block.type ||
+              block.content === undefined ||
+              block.order === undefined
+          )
+      )
     ) {
       return res.status(400).json({
-        message: "Setiap materi harus memiliki judul dan isi.",
+        message:
+          "Setiap materi harus memiliki judul dan contentBlocks dengan type, content, dan order.",
       });
     }
 
@@ -58,12 +72,7 @@ export const updateLanguageController = async (req, res, next) => {
     const { name } = req.params;
     const updatedData = req.body;
 
-    if (
-      !updatedData.name &&
-      !updatedData.icon &&
-      !updatedData.description &&
-      !updatedData.link
-    ) {
+    if (!updatedData.name && !updatedData.icon && !updatedData.description) {
       return res.status(400).json({
         message: "Setidaknya satu field harus diperbarui.",
       });
@@ -86,13 +95,18 @@ export const updateLanguageController = async (req, res, next) => {
 
 export const deleteLanguageController = async (req, res, next) => {
   try {
-    const { name } = req.params;
+    const { languageId } = req.params;
 
-    const isDeleted = await deleteLanguage(name);
+    const language = await Language.findById(languageId);
 
-    if (!isDeleted) {
+    if (!language) {
       return res.status(404).json({ message: "Bahasa tidak ditemukan." });
     }
+
+    await deleteProgressByLanguageId(language._id);
+    await deleteRecentByLanguageId(language._id);
+
+    await deleteLanguageById(language._id);
 
     return res.status(200).json({ message: "Bahasa berhasil dihapus." });
   } catch (error) {

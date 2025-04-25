@@ -31,7 +31,6 @@ export default function RecentContent({ user }: { user: User }) {
     return matchesLanguage;
   });
 
-  // Fungsi untuk toggle dropdown
   const toggleDropdown = (id: string) => {
     setActiveDropdown(activeDropdown === id ? null : id);
   };
@@ -40,7 +39,7 @@ export default function RecentContent({ user }: { user: User }) {
     <div className="p-4">
       <h2 className="text-lg font-semibold mb-4">RECENT USER CONTENT</h2>
 
-      {filteredRecents.length !== 0 ? (
+      {recents.length !== 0 ? (
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
           <div className="relative">
             <button
@@ -152,7 +151,6 @@ export default function RecentContent({ user }: { user: User }) {
         <div></div>
       )}
 
-      {/* Recent Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredRecents.length === 0 ? (
           <div className="col-span-full flex flex-col items-center justify-center text-gray-500 py-8 space-y-4">
@@ -167,9 +165,8 @@ export default function RecentContent({ user }: { user: User }) {
               className="relative bg-white p-4 rounded-lg shadow-md border border-gray-200 transition-all duration-300 hover:shadow-lg hover:bg-gray-50 cursor-pointer"
               onClick={() =>
                 (window.location.href = `/workspace/${recent.workspace.id}`)
-              } // Redirect ke workspace
+              }
             >
-              {/* Action Menu */}
               <div className="absolute top-2 right-2">
                 <ActionMenu
                   isActive={activeDropdown === recent.id}
@@ -184,7 +181,6 @@ export default function RecentContent({ user }: { user: User }) {
                 />
               </div>
 
-              {/* Card Content */}
               <h3 className="text-base font-medium text-gray-800">
                 {recent.workspace.name}
               </h3>

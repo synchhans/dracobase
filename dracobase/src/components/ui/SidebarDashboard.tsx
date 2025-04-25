@@ -33,7 +33,6 @@ export default function SidebarDashboard({ user }: SidebarDasboardProps) {
 
   const adminMenuItems = [
     { name: "Account", icon: <FaUser />, path: "/account" },
-    { name: "Programming", icon: <FaCode />, path: "/programming" },
   ];
 
   return (

@@ -31,9 +31,6 @@ export default function FormFields({
       case "description":
         errors.description = value.trim() ? "" : "Deskripsi wajib diisi.";
         break;
-      case "link":
-        errors.link = value.trim() ? "" : "Link halaman materi wajib diisi.";
-        break;
       default:
         break;
     }
@@ -132,26 +129,6 @@ export default function FormFields({
         )}
       </div>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700">
-          Link Halaman Materi
-        </label>
-        <div className="flex items-center mt-1">
-          <span className="inline-block px-3 py-2 bg-gray-100 rounded-l-md border border-r-0 border-gray-300 whitespace-nowrap">
-            ../pemrograman/
-          </span>
-          <input
-            type="text"
-            name="link"
-            value={formData.link}
-            onChange={handleInputChange}
-            className="block w-full px-3 py-2 border border-gray-300 rounded-r-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-          />
-        </div>
-        {formErrors.link && (
-          <p className="text-sm text-red-500 mt-1">{formErrors.link}</p>
-        )}
-      </div>
 
       <div>
         <label className="block text-sm font-medium text-gray-700">

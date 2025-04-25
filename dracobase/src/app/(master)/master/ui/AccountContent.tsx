@@ -10,8 +10,9 @@ import { useEffect, useRef, useState } from "react";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 import Image from "next/image";
 import EditAccountModal from "./EditAccountModal";
+import { User } from "@/types/user.types";
 
-export default function AccountContent() {
+export default function AccountContent({ user }: { user: User }) {
   const { accounts, loading, error, refetch, editAccount, deleteAccount } =
     useAccount();
   const [searchTerm, setSearchTerm] = useState("");

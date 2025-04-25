@@ -22,7 +22,7 @@ languageRoutes.put(
 );
 
 languageRoutes.delete(
-  "/:name",
+  "/:languageId",
   isProfileCompleted,
   isAdmin,
   deleteLanguageController

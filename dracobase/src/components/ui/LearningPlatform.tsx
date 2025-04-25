@@ -1,4 +1,3 @@
-"use client";
 import React, { useState } from "react";
 import Image from "next/image";
 import { FaBars, FaLock, FaUnlock } from "react-icons/fa";
@@ -29,52 +28,42 @@ export default function LearningPlatform({
   } = useLearningProgress(workspace.userId._id, workspace._id);
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
 
-  // Fungsi untuk pindah ke materi berikutnya
   const goToNextMaterial = () => {
     if (isCompleted) return;
-
     const currentMaterialIndexNumber = currentMaterialIndex;
-
     if (!completedMaterials.includes(currentMaterialIndexNumber)) {
       markMaterialAsCompleted(currentMaterialIndexNumber);
     }
-
     if (currentMaterialIndex < workspace.language.materials.length - 1) {
       updateMaterialIndex(currentMaterialIndex + 1);
     }
   };
 
-  // Fungsi untuk pindah ke materi sebelumnya
   const goToPreviousMaterial = () => {
     if (isCompleted) return;
-
     if (currentMaterialIndex > 0) {
       updateMaterialIndex(currentMaterialIndex - 1);
     }
   };
 
-  // Cek apakah materi sudah diselesaikan
   const isMaterialCompleted = (materialIndex: number): boolean => {
     return completedMaterials.includes(materialIndex);
   };
 
-  // Fungsi untuk mengubah materi melalui sidebar
   const handleMaterialClick = (index: number) => {
     if (isCompleted) {
       updateMaterialIndex(index);
       return;
     }
-
     if (index <= currentMaterialIndex || completedMaterials.includes(index)) {
       updateMaterialIndex(index);
     }
   };
 
-  // Materi saat ini
   const currentMaterial = workspace.language.materials[currentMaterialIndex];
 
-  // Loading state
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -83,16 +72,110 @@ export default function LearningPlatform({
     );
   }
 
+  const getYoutubeEmbedUrl = (url: string): string | null => {
+    const youtubeRegex =
+      /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+    const match = url.match(youtubeRegex);
+    return match ? `https://www.youtube.com/embed/${match[1]}` : null;
+  };
+
+  const handleCopy = async (content: string) => {
+    try {
+      await navigator.clipboard.writeText(content);
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
+    } catch (error) {
+      console.error("Gagal menyalin teks:", error);
+    }
+  };
+
+  const renderContentBlock = (block: any) => {
+    switch (block.type) {
+      case "text":
+        return <p className="text-gray-700 mb-4">{block.content.toString()}</p>;
+      case "code":
+        return (
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold text-gray-800 mb-2 flex items-center justify-between">
+              <span>Contoh Kode</span>
+              <button
+                onClick={() => handleCopy(block.content.toString())}
+                className="bg-blue-500 text-white px-3 py-1 rounded-md text-sm hover:bg-blue-600 transition"
+              >
+                {isCopied ? "Copied!" : "Copy"}
+              </button>
+            </h2>
+            <pre className="bg-gray-900 text-white p-4 rounded-md overflow-x-auto">
+              <code>{block.content.toString()}</code>
+            </pre>
+          </div>
+        );
+      case "commands":
+        return (
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold text-gray-800 mb-2">
+              Perintah Terminal
+            </h2>
+            <ul className="list-disc pl-6">
+              {block.content.map((command: string, index: number) => (
+                <li key={index} className="text-gray-700">
+                  {command}
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      case "terminal":
+        return (
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold text-gray-800 mb-2">
+              Terminal
+            </h2>
+            <pre className="bg-gray-900 text-white p-4 rounded-md overflow-x-auto">
+              <code>{block.content.toString()}</code>
+            </pre>
+          </div>
+        );
+      case "image":
+        return (
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold text-gray-800 mb-2">Gambar</h2>
+            <Image
+              src={block.content.toString()}
+              alt="Materi"
+              width={500}
+              height={300}
+              className="rounded-md"
+            />
+          </div>
+        );
+      case "video":
+        const embedUrl = getYoutubeEmbedUrl(block.content.toString());
+        if (!embedUrl) {
+          return <p className="text-red-500">URL video tidak valid.</p>;
+        }
+
+        return (
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold text-gray-800 mb-2">Video</h2>
+            <div className="relative w-full aspect-video rounded-md overflow-hidden">
+              <iframe
+                src={embedUrl}
+                title="YouTube Video"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="absolute top-0 left-0 w-full h-full"
+              ></iframe>
+            </div>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {isSidebarOpen && (
-        <div
-          className="fixed inset-0 bg-transparent bg-opacity-50 lg:hidden"
-          onClick={() => setIsSidebarOpen(false)}
-        ></div>
-      )}
-
-      {/* Sidebar */}
       <aside
         className={`${
           isSidebarOpen ? "block" : "hidden"
@@ -144,7 +227,6 @@ export default function LearningPlatform({
               !isCompleted &&
               index > currentMaterialIndex &&
               !isMaterialCompleted(index);
-
             return (
               <li
                 key={material._id}
@@ -184,46 +266,18 @@ export default function LearningPlatform({
         <FaBars className="text-sm" />
       </button>
 
-      {/* Main Content */}
-      <main className="flex-1 p-8 overflow-y-auto lg:ml-10">
-        {/* Judul Materi */}
+      <main className="flex-1 p-8 pb-20 overflow-y-auto lg:ml-6">
         <h1 className="text-2xl font-bold text-gray-800 mb-4">
           {currentMaterial.title}
         </h1>
 
-        {/* Deskripsi Materi */}
-        <p className="text-gray-700 mb-6">{currentMaterial.content}</p>
-
-        {/* Contoh Kode */}
-        {currentMaterial.codeExample && (
-          <div className="mb-6">
-            <h2 className="text-xl font-semibold text-gray-800 mb-2">
-              Contoh Kode
-            </h2>
-            <pre className="bg-gray-900 text-white p-4 rounded-md overflow-x-auto">
-              <code>{currentMaterial.codeExample}</code>
-            </pre>
+        {currentMaterial.contentBlocks.map((block, index) => (
+          <div key={index} className="mb-6">
+            {renderContentBlock(block)}
           </div>
-        )}
-
-        {/* Perintah Terminal */}
-        {currentMaterial.terminalCommands.length > 0 && (
-          <div className="mb-6">
-            <h2 className="text-xl font-semibold text-gray-800 mb-2">
-              Perintah Terminal
-            </h2>
-            <ul className="list-disc pl-6">
-              {currentMaterial.terminalCommands.map((command, index) => (
-                <li key={index} className="text-gray-700">
-                  {command}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+        ))}
       </main>
 
-      {/* Navigation Buttons */}
       {!isCompleted && (
         <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 p-4 flex justify-between items-center">
           <button

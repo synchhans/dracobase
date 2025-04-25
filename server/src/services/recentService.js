@@ -65,6 +65,23 @@ export const deleteRecentService = async (recentId) => {
   }
 };
 
+export const deleteRecentByLanguageId = async (languageId) => {
+  try {
+    const workspaces = await Workspace.find({ language: languageId });
+
+    const workspaceIds = workspaces.map((workspace) => workspace._id);
+
+    await Recent.deleteMany({ workspaceId: { $in: workspaceIds } });
+
+    await Workspace.deleteMany({ _id: { $in: workspaceIds } });
+
+    console.log(`Deleted recent entries for languageId: ${languageId}`);
+  } catch (error) {
+    console.error("Error in deleteRecentByLanguageId:", error.message);
+    throw new Error(error.message || "Gagal menghapus entri recent.");
+  }
+};
+
 export const updateRecentService = async (id, updateData) => {
   try {
     const updatedRecent = await Recent.findByIdAndUpdate(

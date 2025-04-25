@@ -19,6 +19,7 @@ export default function LanguageModal({
   const [searchTerm, setSearchTerm] = useState("");
   const [activeCategories, setActiveCategories] = useState<string[]>([]);
   const [isCUDModalOpen, setIsCUDModalOpen] = useState(false);
+  const [isCModalOpen, setIsCModalOpen] = useState(false);
   const [languageToUpdate, setLanguageToUpdate] = useState<any | null>(null);
   const [dropdownIndex, setDropdownIndex] = useState<number | null>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -33,11 +34,13 @@ export default function LanguageModal({
     setIsCUDModalOpen(true);
   };
 
-  const handleDeleteClick = async (languageName: string) => {
+  const handleDeleteClick = async (languageId: string) => {
     if (window.confirm("Apakah Anda yakin ingin menghapus bahasa ini?")) {
       try {
-        await deleteLanguage(languageName);
+        await deleteLanguage(languageId);
         toast.success("Bahasa berhasil dihapus.");
+
+        window.location.reload();
       } catch (err: any) {
         toast.error(`Gagal menghapus bahasa: ${err.message}`);
       }
@@ -137,6 +140,15 @@ export default function LanguageModal({
                 &times;
               </button>
             </div>
+
+            {role === "admin" && (
+              <button
+                className="mb-5 px-4 py-2 bg-green-500 text-white text-sm rounded-md hover:bg-green-600 transition-colors"
+                onClick={() => setIsCModalOpen(true)}
+              >
+                Tambah Bahasa Pemrograman
+              </button>
+            )}
 
             {/* Filter and Search */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
@@ -240,7 +252,7 @@ export default function LanguageModal({
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     setDropdownIndex(null);
-                                    handleDeleteClick(language.name);
+                                    handleDeleteClick(language._id!);
                                   }}
                                 >
                                   <FaTrash className="w-4 h-4" />
@@ -359,6 +371,9 @@ export default function LanguageModal({
           mode="update"
           languageToUpdate={languageToUpdate}
         />
+      )}
+      {isCModalOpen && (
+        <CULanguageModal onClose={() => setIsCModalOpen(false)} />
       )}
     </>
   );

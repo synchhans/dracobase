@@ -3,5 +3,4 @@ export interface Language {
   icon: string;
   description: string;
   categories: string[];
-  link: string;
 }

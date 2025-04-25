@@ -19,27 +19,33 @@ const languageSchema = new mongoose.Schema(
       type: [String],
       default: [],
     },
-    link: {
-      type: String,
-      required: true,
-    },
     materials: [
       {
+        _id: {
+          type: mongoose.Schema.Types.ObjectId,
+          auto: true,
+        },
         title: {
           type: String,
           required: true,
         },
-        content: {
-          type: String,
-          required: true,
-        },
-        codeExample: {
-          type: String,
-        },
-        terminalCommands: {
-          type: [String],
-          default: [],
-        },
+        contentBlocks: [
+          {
+            type: {
+              type: String,
+              enum: ["text", "code", "commands", "terminal", "image", "video"], 
+              required: true,
+            },
+            content: {
+              type: mongoose.Schema.Types.Mixed,
+              required: true,
+            },
+            order: {
+              type: Number,
+              required: true,
+            },
+          },
+        ],
         createdAt: {
           type: Date,
           default: Date.now,

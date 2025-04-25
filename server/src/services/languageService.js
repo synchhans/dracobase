@@ -50,8 +50,21 @@ export const deleteLanguage = async (name) => {
       throw new Error("Bahasa tidak ditemukan.");
     }
 
-    return true;
+    return deletedLanguage;
   } catch (error) {
     throw new Error(error.message || "Gagal menghapus bahasa pemrograman.");
+  }
+};
+
+export const deleteLanguageById = async (languageId) => {
+  try {
+    const deletedLanguage = await Language.findByIdAndDelete(languageId);
+    if (!deletedLanguage) {
+      throw new Error("Bahasa tidak ditemukan.");
+    }
+    return deletedLanguage;
+  } catch (error) {
+    console.error("Error in deleteLanguageById:", error.message);
+    throw new Error(error.message || "Gagal menghapus bahasa.");
   }
 };

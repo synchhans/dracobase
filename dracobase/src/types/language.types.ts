@@ -1,20 +1,26 @@
 import { ReactNode } from "react";
 
 export interface Language {
+  _id?: string;
   name: string;
   icon: string;
   description: string;
   categories: string[];
-  link: string;
   materials: Material[];
   published: boolean;
 }
 
+export interface ContentBlock {
+  type: "text" | "code" | "commands" | "terminal" | "image" | "video";
+  content: string | string[];
+  order: number;
+}
+
 export interface Material {
+  _id?: string;
   title: string;
-  content: string;
-  codeExample?: string;
-  terminalCommands?: string[];
+  contentBlocks: ContentBlock[];
+  createdAt?: string;
 }
 
 export interface FormData {
@@ -22,7 +28,6 @@ export interface FormData {
   icon: string;
   description: string;
   categories: string[];
-  link: string;
   materials: Material[];
   published: boolean;
 }

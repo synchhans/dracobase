@@ -1,4 +1,5 @@
 import UserProgress from "../models/UserProgress.js";
+import Workspace from "../models/Workspace.js";
 
 export const getProgress = async (userId, workspaceId) => {
   try {
@@ -41,5 +42,20 @@ export const updateProgress = async (userId, workspaceId, updates) => {
     return updatedProgress;
   } catch (error) {
     throw error;
+  }
+};
+
+export const deleteProgressByLanguageId = async (languageId) => {
+  try {
+    const workspaces = await Workspace.find({ language: languageId });
+
+    const workspaceIds = workspaces.map((workspace) => workspace._id);
+
+    await UserProgress.deleteMany({ workspaceId: { $in: workspaceIds } });
+
+    console.log(`Deleted progress entries for languageId: ${languageId}`);
+  } catch (error) {
+    console.error("Error in deleteProgressByLanguageId:", error.message);
+    throw new Error(error.message || "Gagal menghapus entri progress.");
   }
 };

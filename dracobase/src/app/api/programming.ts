@@ -55,9 +55,9 @@ export const apiUpdateLanguage = async (
   }
 };
 
-export const apiDeleteLanguage = async (name: string): Promise<void> => {
+export const apiDeleteLanguage = async (languageId: string): Promise<void> => {
   try {
-    const response = await fetch(`${API_URL}/${name}`, {
+    const response = await fetch(`${API_URL}/${languageId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
