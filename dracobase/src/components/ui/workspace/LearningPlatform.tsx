@@ -3,6 +3,7 @@ import Image from "next/image";
 import { FaBars, FaLock, FaUnlock } from "react-icons/fa";
 import { Workspace } from "@/types/workspace.types";
 import { useLearningProgress } from "@/hooks/useLearningProgress";
+import TerminalEditor from "./TerminalEditor";
 
 export default function LearningPlatform({
   workspace,
@@ -72,11 +73,32 @@ export default function LearningPlatform({
     );
   }
 
-  const getYoutubeEmbedUrl = (url: string): string | null => {
-    const youtubeRegex =
+  const getYoutubeEmbedUrl = (
+    url: string
+  ): { type: "video" | "playlist"; embedUrl: string } | null => {
+    const videoRegex =
       /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
-    const match = url.match(youtubeRegex);
-    return match ? `https://www.youtube.com/embed/${match[1]}` : null;
+    const videoMatch = url.match(videoRegex);
+
+    if (videoMatch) {
+      return {
+        type: "video",
+        embedUrl: `https://www.youtube.com/embed/${videoMatch[1]}`,
+      };
+    }
+
+    const playlistRegex =
+      /(?:https?:\/\/)?(?:www\.)?youtube\.com\/playlist\?list=([a-zA-Z0-9_-]+)/;
+    const playlistMatch = url.match(playlistRegex);
+
+    if (playlistMatch) {
+      return {
+        type: "playlist",
+        embedUrl: `https://www.youtube.com/embed/videoseries?list=${playlistMatch[1]}`,
+      };
+    }
+
+    return null;
   };
 
   const handleCopy = async (content: string) => {
@@ -116,13 +138,14 @@ export default function LearningPlatform({
             <h2 className="text-xl font-semibold text-gray-800 mb-2">
               Perintah Terminal
             </h2>
-            <ul className="list-disc pl-6">
+            <div className="bg-gray-900 text-white p-4 rounded-md overflow-x-auto">
               {block.content.map((command: string, index: number) => (
-                <li key={index} className="text-gray-700">
-                  {command}
-                </li>
+                <div key={index} className="flex items-center mb-2">
+                  <span className="text-green-400 mr-2">&gt;</span>
+                  <code className="font-mono">{command}</code>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
         );
       case "terminal":
@@ -131,9 +154,14 @@ export default function LearningPlatform({
             <h2 className="text-xl font-semibold text-gray-800 mb-2">
               Terminal
             </h2>
-            <pre className="bg-gray-900 text-white p-4 rounded-md overflow-x-auto">
-              <code>{block.content.toString()}</code>
-            </pre>
+            <TerminalEditor
+              defaultValue={block.content.toString()}
+              language={workspace.language.name}
+              materialId={currentMaterial._id!}
+              contentBlock={block}
+              workspaceId={workspace._id}
+              isCompleted={isCompleted}
+            />
           </div>
         );
       case "image":
@@ -143,25 +171,33 @@ export default function LearningPlatform({
             <Image
               src={block.content.toString()}
               alt="Materi"
-              width={500}
-              height={300}
+              width={300}
+              height={100}
               className="rounded-md"
             />
           </div>
         );
       case "video":
-        const embedUrl = getYoutubeEmbedUrl(block.content.toString());
-        if (!embedUrl) {
-          return <p className="text-red-500">URL video tidak valid.</p>;
+        const result = getYoutubeEmbedUrl(block.content.toString());
+        if (!result) {
+          return (
+            <p className="text-red-500">URL video atau playlist tidak valid.</p>
+          );
         }
+
+        const { type, embedUrl } = result;
 
         return (
           <div className="mb-6">
-            <h2 className="text-xl font-semibold text-gray-800 mb-2">Video</h2>
+            <h2 className="text-xl font-semibold text-gray-800 mb-2">
+              {type === "playlist" ? "Playlist" : "Video"}
+            </h2>
             <div className="relative w-full aspect-video rounded-md overflow-hidden">
               <iframe
                 src={embedUrl}
-                title="YouTube Video"
+                title={
+                  type === "playlist" ? "YouTube Playlist" : "YouTube Video"
+                }
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
                 className="absolute top-0 left-0 w-full h-full"

@@ -14,7 +14,7 @@ export const useLearningProgress = (userId: string, workspaceId: string) => {
         const progress: Progress = await apiGetProgress(userId, workspaceId);
         setCurrentMaterialIndex(progress.activeMaterialIndex);
         setCompletedMaterials(progress.completedMaterialIndexes);
-        setIsCompleted(progress.isCompleted || false); // Simpan nilai isCompleted
+        setIsCompleted(progress.isCompleted || false);
       } catch (error) {
         console.error("Error loading progress:", error);
       } finally {
@@ -30,7 +30,6 @@ export const useLearningProgress = (userId: string, workspaceId: string) => {
     newCompletedMaterials: number[],
     isCompletedParam: boolean = false
   ) => {
-    // Jika sudah selesai, tidak perlu menyimpan lagi
     if (isCompleted) return;
 
     try {
@@ -41,7 +40,6 @@ export const useLearningProgress = (userId: string, workspaceId: string) => {
       };
       await apiUpdateProgress(userId, workspaceId, params);
 
-      // Perbarui state isCompleted jika diperlukan
       if (isCompletedParam) {
         setIsCompleted(true);
       }
@@ -51,19 +49,16 @@ export const useLearningProgress = (userId: string, workspaceId: string) => {
   };
 
   const updateMaterialIndex = (newMaterialIndex: number) => {
-    // Jika sudah selesai, tidak perlu memperbarui index
     if (isCompleted) {
       setCurrentMaterialIndex(newMaterialIndex);
       return;
     }
 
-    // Jika belum selesai, perbarui indeks dan simpan progress
     setCurrentMaterialIndex(newMaterialIndex);
     saveCurrentProgress(newMaterialIndex, completedMaterials);
   };
 
   const markMaterialAsCompleted = (materialIndex: number) => {
-    // Jika sudah selesai, tidak perlu menandai materi sebagai selesai
     if (isCompleted) return;
 
     if (!completedMaterials.includes(materialIndex)) {
@@ -74,7 +69,6 @@ export const useLearningProgress = (userId: string, workspaceId: string) => {
   };
 
   const markAsCompleted = async () => {
-    // Jika sudah selesai, tidak perlu menjalankan ini lagi
     if (isCompleted) return;
 
     try {
@@ -90,22 +84,11 @@ export const useLearningProgress = (userId: string, workspaceId: string) => {
     const handleBeforeUnload = async (event: BeforeUnloadEvent) => {
       if (isCompleted) return;
 
-      const isConfirmed = window.confirm(
-        "Apakah Anda yakin ingin keluar? Progress materi Anda akan disimpan."
-      );
-
-      if (isConfirmed) {
-        const params: UpdateProgressParams = {
-          activeMaterialIndex: currentMaterialIndex,
-          completedMaterialIndexes: completedMaterials,
-        };
-        await apiUpdateProgress(userId, workspaceId, params);
-
-        return;
-      }
-
-      event.preventDefault();
-      event.returnValue = "";
+      const params: UpdateProgressParams = {
+        activeMaterialIndex: currentMaterialIndex,
+        completedMaterialIndexes: completedMaterials,
+      };
+      await apiUpdateProgress(userId, workspaceId, params);
     };
 
     window.addEventListener("beforeunload", handleBeforeUnload);
@@ -113,12 +96,18 @@ export const useLearningProgress = (userId: string, workspaceId: string) => {
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
-  }, [currentMaterialIndex, completedMaterials, userId, workspaceId]);
+  }, [
+    isCompleted,
+    currentMaterialIndex,
+    completedMaterials,
+    userId,
+    workspaceId,
+  ]);
 
   return {
     currentMaterialIndex,
     completedMaterials,
-    isCompleted, // Tambahkan isCompleted ke return value
+    isCompleted,
     loading,
     updateMaterialIndex,
     markMaterialAsCompleted,

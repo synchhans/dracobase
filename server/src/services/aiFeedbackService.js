@@ -1,4 +1,4 @@
-import AIFeedback from "../models/AIFeedback.js";
+import AIFeedback from "../models/Ai.js";
 
 export const createAIFeedbackService = async (data) => {
   try {

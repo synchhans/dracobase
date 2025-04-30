@@ -1,9 +1,9 @@
 "use client";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
-import LearningPlatform from "@/components/ui/LearningPlatform";
+import LearningPlatform from "@/components/ui/workspace/LearningPlatform";
 import useFetchWorkspace from "@/hooks/useFetchWorkspace";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 
 export default function WorkspacePage({
   params,
@@ -11,7 +11,13 @@ export default function WorkspacePage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = React.use(params);
-  const { workspace, loading, error } = useFetchWorkspace(id);
+  const { workspace, loading, error, shouldRedirect } = useFetchWorkspace(id);
+
+  useEffect(() => {
+    if (shouldRedirect) {
+      window.location.href = "/login";
+    }
+  }, [shouldRedirect]);
 
   if (loading) {
     return <LoadingSpinner />;

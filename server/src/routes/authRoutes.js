@@ -4,6 +4,9 @@ import authLimiter from "../middlewares/rateLimitMiddleware.js";
 import { getMe, updateProfile, logout } from "../controllers/authController.js";
 import isProfileCompleted from "../middlewares/isProfileCompleted.js";
 import { fetchDataUser } from "../controllers/userController.js";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const authRouter = express.Router();
 
@@ -16,7 +19,9 @@ authRouter.get(
 authRouter.get(
   "/google/callback",
   authLimiter,
-  passport.authenticate("google", { failureRedirect: "/login" }),
+  passport.authenticate("google", {
+    failureRedirect: `${process.env.FRONTEND_URL}/login`,
+  }),
   (req, res) => {
     const { isProfileComplete } = req.user;
     if (!isProfileComplete) {
@@ -46,7 +51,9 @@ authRouter.get(
 authRouter.get(
   "/github/callback",
   authLimiter,
-  passport.authenticate("github", { failureRedirect: "/login" }),
+  passport.authenticate("github", {
+    failureRedirect: `${process.env.FRONTEND_URL}/login`,
+  }),
   (req, res) => {
     const { isProfileComplete } = req.user;
     if (!isProfileComplete) {

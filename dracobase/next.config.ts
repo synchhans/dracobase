@@ -21,6 +21,18 @@ const nextConfig: NextConfig = {
         port: "",
         pathname: "**",
       },
+      {
+        protocol: "https",
+        hostname: "www.w3schools.com",
+        port: "",
+        pathname: "**",
+      },
+      {
+        protocol: "https",
+        hostname: "miro.medium.com",
+        port: "",
+        pathname: "**",
+      },
     ],
   },
 };

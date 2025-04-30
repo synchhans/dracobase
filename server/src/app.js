@@ -53,6 +53,7 @@ import codeRouter from "./routes/codeRouter.js";
 import executionLogRouter from "./routes/executionLogRouter.js";
 import aiFeedbackRouter from "./routes/aiFeedbackRouter.js";
 import debuggingRouter from "./routes/debuggingRouter.js";
+import aiRoutes from "./routes/aiRoutes.js";
 
 app.use("/api/auth", authRoutes);
 app.use("/api/dashboard", dashboardRouter);
@@ -66,6 +67,7 @@ app.use("/api/code", codeRouter);
 app.use("/api/executionlog", executionLogRouter);
 app.use("/api/aifeedback", aiFeedbackRouter);
 app.use("/api/debugging", debuggingRouter);
+app.use("/api/ai", aiRoutes);
 
 app.use(errorHandler);
 

@@ -1,30 +1,33 @@
 import mongoose from "mongoose";
 
-const aiFeedbackSchema = new mongoose.Schema(
+const aiSchema = new mongoose.Schema(
   {
+    workspaceId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+    },
     materialId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Language.materials",
+      required: true,
+    },
+    contentBlockId: {
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
     },
     query: {
       type: String,
       required: true,
+      trim: true,
     },
     response: {
       type: String,
       required: true,
+      trim: true,
     },
     feedbackType: {
       type: String,
-      enum: ["debugging", "explanation", "suggestion", "other"],
+      enum: ["debugging", "feedback"],
       required: true,
-    },
-    confidenceScore: {
-      type: Number,
-      min: 0,
-      max: 1,
-      default: 0,
     },
     createdAt: {
       type: Date,
@@ -38,11 +41,11 @@ const aiFeedbackSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-aiFeedbackSchema.pre("save", function (next) {
+aiSchema.pre("save", function (next) {
   this.updatedAt = Date.now();
   next();
 });
 
-const AIFeedback = mongoose.model("AIFeedback", aiFeedbackSchema);
+const Ai = mongoose.model("Ai", aiSchema);
 
-export default AIFeedback;
+export default Ai;

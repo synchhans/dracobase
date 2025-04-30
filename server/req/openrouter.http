@@ -1,0 +1,15 @@
+### Open Router
+
+curl https://openrouter.ai/api/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer sk-or-v1-6xsax111f84610e4c17a99ac4515b64dd0f57365a45c8029d8ae6dcebbc932377082" \
+  -d '{
+  "model": "qwen/qwen3-30b-a3b:free",
+  "messages": [
+    {
+      "role": "user",
+      "content": "What is the meaning of life?"
+    }
+  ]
+  
+}'
