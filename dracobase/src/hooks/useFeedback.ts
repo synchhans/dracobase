@@ -29,7 +29,7 @@ export const useFeedback = (
           const latestFeedbackEntry = response.data[0];
           if (latestFeedbackEntry) {
             setAIFeedback({
-              query: latestFeedbackEntry.response.query,
+              query: latestFeedbackEntry.query,
               response: latestFeedbackEntry.response,
             });
             setIsFeedbackVisible(true);
