@@ -59,7 +59,7 @@ export const getDataAi = async ({
 }): Promise<any> => {
   try {
     const response = await fetch(
-      `${API_URL}/${workspaceId}/${materialId}/${type}/${contentBlockId}`,
+      `${API_URL}?workspaceId=${workspaceId}&materialId=${materialId}&contentBlockId=${contentBlockId}&type=${type}`,
       {
         method: "GET",
         credentials: "include",

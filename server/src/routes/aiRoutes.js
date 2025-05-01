@@ -4,11 +4,7 @@ import { getDataAi, handleAi } from "../controllers/aiController.js";
 
 const aiRoutes = express.Router();
 
-aiRoutes.get(
-  "/:workspaceId/:materialId/:type/:contentBlockId",
-  isProfileCompleted,
-  getDataAi
-);
+aiRoutes.get("/", isProfileCompleted, getDataAi);
 
 aiRoutes.post("/", isProfileCompleted, handleAi);
 

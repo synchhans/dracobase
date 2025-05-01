@@ -4,13 +4,21 @@ import { buildQuery } from "../utils/buildQuery.js";
 import { cleanCode } from "../utils/codeCleaner.js";
 
 export const handleAi = async (req, res, next) => {
+  const userId = req.user._id;
   try {
     const { workspaceId, materialId, contentBlockId, query, type } = req.body;
 
-    if (!workspaceId || !materialId || !contentBlockId || !query || !type) {
+    if (
+      !userId ||
+      !workspaceId ||
+      !materialId ||
+      !contentBlockId ||
+      !query ||
+      !type
+    ) {
       return res.status(400).json({
         message:
-          "Workspace ID, Material ID, ContentBlock ID, Type, dan Query wajib diisi.",
+          "Unauthorized, Workspace ID, Material ID, ContentBlock ID, Type, dan Query wajib diisi.",
       });
     }
 
@@ -30,6 +38,7 @@ export const handleAi = async (req, res, next) => {
       aiResponse.choices?.[0]?.message?.content || "No response";
 
     const aiData = {
+      userId,
       workspaceId,
       materialId,
       contentBlockId,
@@ -40,7 +49,7 @@ export const handleAi = async (req, res, next) => {
 
     const savedData = await Ai.create(aiData);
 
-    return res.status(200).json({
+    return res.status(201).json({
       message: "AI berhasil diproses.",
       data: savedData,
     });
@@ -51,46 +60,56 @@ export const handleAi = async (req, res, next) => {
 
 export const getDataAi = async (req, res) => {
   try {
-    const { workspaceId, materialId, contentBlockId, type } = req.params;
+    const userId = req.user?._id;
 
-    if (!workspaceId || !materialId || !contentBlockId || !type) {
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized: User ID tidak ditemukan atau tidak valid",
+      });
+    }
+
+    const { workspaceId, materialId, contentBlockId, type } = req.query;
+    const allowedTypes = ["debugging", "feedback"];
+    let filters = { userId };
+
+    if (
+      (workspaceId && !materialId) ||
+      (materialId && !contentBlockId) ||
+      (contentBlockId && !type) ||
+      (type && !allowedTypes.includes(type.toLowerCase()))
+    ) {
       return res.status(400).json({
         success: false,
         message:
-          "Workspace ID, Material ID, ContentBlock ID dan Type harus disertakan",
+          "Jika menyertakan Material ID, ContentBlock ID, atau Type, pastikan formatnya benar: materialId + contentBlockId + type",
       });
     }
 
-    const allowedTypes = ["debugging", "feedback"];
-    if (!allowedTypes.includes(type.toLowerCase())) {
-      return res.status(400).json({
-        success: false,
-        message: "Type tidak valid.",
-      });
+    if (workspaceId && materialId && contentBlockId && type) {
+      filters.workspaceId = workspaceId;
+      filters.materialId = materialId;
+      filters.contentBlockId = contentBlockId;
+      filters.feedbackType = type.toLowerCase();
     }
 
-    const dataAi = await Ai.find({
-      workspaceId,
-      materialId,
-      contentBlockId,
-      feedbackType: type,
-    });
+    const aiData = await Ai.find(filters);
 
-    if (!dataAi || dataAi.length === 0) {
+    if (!aiData || aiData.length === 0) {
       return res.status(404).json({
         success: false,
-        message: "Data tidak ditemukan",
+        message: "Tidak ada data AI sesuai kriteria pencarian.",
       });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
-      count: dataAi.length,
-      data: dataAi,
+      count: aiData.length,
+      data: aiData,
     });
   } catch (error) {
     console.error("Error fetching AI data:", error);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Terjadi kesalahan pada server",
       error: error.message,

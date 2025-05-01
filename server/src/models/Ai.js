@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 
 const aiSchema = new mongoose.Schema(
   {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+    },
     workspaceId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,

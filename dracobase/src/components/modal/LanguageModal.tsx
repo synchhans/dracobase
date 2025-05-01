@@ -79,7 +79,6 @@ export default function LanguageModal({
   const closeWorkspaceModal = () => {
     setIsWorkspaceModalOpen(false);
     setSelectedLanguage(null);
-    window.location.reload();
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -104,6 +103,7 @@ export default function LanguageModal({
 
       toast.success("Workspace berhasil dibuat!");
       closeWorkspaceModal();
+      window.location.reload();
     } catch (err: any) {
       toast.error(`Gagal membuat workspace: ${err.message}`);
     }

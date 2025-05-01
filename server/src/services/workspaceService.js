@@ -2,6 +2,7 @@ import Workspace from "../models/Workspace.js";
 import Recent from "../models/Recent.js";
 import { createProgress } from "./progressService.js";
 import UserProgress from "../models/UserProgress.js";
+import Ai from "../models/Ai.js";
 
 export const createWorkspace = async ({
   userId,
@@ -73,6 +74,8 @@ export const deleteWorkspace = async (workspaceId) => {
     await UserProgress.deleteMany({ workspaceId });
 
     await Workspace.findByIdAndDelete(workspaceId);
+
+    await Ai.deleteMany({ workspaceId });
 
     await Recent.deleteMany({ workspaceId });
 
