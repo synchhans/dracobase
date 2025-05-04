@@ -1,5 +1,4 @@
-import React from "react";
-import MonacoEditor from "@monaco-editor/react";
+import React, { useEffect, useState } from "react";
 import { emmetHTML, emmetJSX } from "emmet-monaco-es";
 
 interface EditorProps {
@@ -9,6 +8,14 @@ interface EditorProps {
 }
 
 const Editor: React.FC<EditorProps> = ({ language, code, onChange }) => {
+  const [MonacoEditor, setMonacoEditor] = useState<any>(null);
+
+  useEffect(() => {
+    import("@monaco-editor/react").then((module) => {
+      setMonacoEditor(() => module.default);
+    });
+  }, []);
+
   const handleEditorDidMount = (editor: any, monaco: any) => {
     if (editor) {
       switch (language) {
@@ -24,13 +31,17 @@ const Editor: React.FC<EditorProps> = ({ language, code, onChange }) => {
     }
   };
 
+  if (!MonacoEditor) {
+    return <div>Loading editor...</div>;
+  }
+
   return (
     <MonacoEditor
       height="320px"
       language={language}
       theme="vs-dark"
       value={code}
-      onChange={(value) => onChange(value || "")}
+      onChange={(value: string | undefined) => onChange(value || "")}
       onMount={handleEditorDidMount}
       options={{
         quickSuggestions: true,
