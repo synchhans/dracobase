@@ -27,7 +27,6 @@
 }
 
 @media (min-width: 1024px) {
-  /* Large screens (lg) */
   .logo {
     height: 56px;
     margin: 0 32px;
@@ -35,7 +34,6 @@
 }
 
 @media (min-width: 1280px) {
-  /* Extra-large screens (xl) */
   .logo {
     height: 64px;
     margin: 0 40px;

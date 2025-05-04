@@ -1,4 +1,3 @@
-// hooks/useUserTutorial.ts
 import { useState, useEffect } from "react";
 
 type TutorialKey = "dashboard" | "documentation" | "workspace" | string;
@@ -8,7 +7,6 @@ export default function useUserTutorial(tutorialKey: TutorialKey = "default") {
     useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
 
-  // Baca status tutorial saat pertama kali mount
   useEffect(() => {
     const localKey = `tutorial_${tutorialKey}`;
     const localStatus = localStorage.getItem(localKey);
@@ -20,7 +18,6 @@ export default function useUserTutorial(tutorialKey: TutorialKey = "default") {
     setLoading(false);
   }, [tutorialKey]);
 
-  // Fungsi untuk update status tutorial
   const markAsCompleted = () => {
     const localKey = `tutorial_${tutorialKey}`;
     localStorage.setItem(localKey, "completed");

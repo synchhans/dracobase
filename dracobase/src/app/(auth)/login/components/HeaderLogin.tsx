@@ -3,7 +3,6 @@ import Link from "next/link";
 export default function HeaderLogin() {
   return (
     <div className="text-center space-y-4">
-      {/* Logo */}
       <div className="flex justify-center mb-4">
         <Link href="/" aria-label="Back to homepage">
           <svg
@@ -18,7 +17,6 @@ export default function HeaderLogin() {
         </Link>
       </div>
 
-      {/* Judul */}
       <h1 className="text-3xl font-bold text-gray-800">Sign in to Dracobase</h1>
       <p className="text-sm text-gray-600">
         Use your preferred account to log in.

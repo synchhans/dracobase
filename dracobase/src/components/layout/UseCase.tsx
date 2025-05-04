@@ -5,14 +5,11 @@ const UseCase = () => {
   return (
     <section className="py-16 bg-gray-50 min-h-screen" id="usecase">
       <div className="container px-6 mx-auto">
-        {/* Judul */}
         <h2 className="text-3xl font-bold text-center text-gray-800 my-12">
           Bagaimana Dracobase Dapat Membantu Anda?
         </h2>
 
-        {/* Grid Use Cases */}
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-          {/* Use Case 1: Belajar Pemrograman Dasar */}
           <div className="p-6 bg-white rounded-lg shadow-md text-center hover:bg-blue-50 transition duration-300">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -37,32 +34,31 @@ const UseCase = () => {
             </p>
           </div>
 
-          {/* Use Case 2: Latihan Coding Harian */}
           <div className="p-6 bg-white rounded-lg shadow-md text-center hover:bg-green-50 transition duration-300">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="w-12 h-12 mx-auto text-green-600 mb-4"
-              fill="none"
+              className="w-12 h-12 mx-auto text-yellow-500 mb-4"
               viewBox="0 0 24 24"
+              fill="none"
               stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 4v16m8-8H4"
-              />
+              <polygon points="7 5 17 12 7 19 7 5" />
             </svg>
+
             <h3 className="text-xl font-semibold text-gray-800 mb-2">
-              Latihan Coding Harian
+              Panduan Penggunaan
             </h3>
+
             <p className="text-gray-600">
-              Tingkatkan keterampilan coding Anda dengan bahasa yang sedang
-              dipelajari dengan latihan harian.
+              Kami menyediakan panduan langkah demi langkah untuk membantu Anda
+              memahami semua fitur aplikasi dengan mudah, terutama saat pertama
+              kali login.
             </p>
           </div>
 
-          {/* Use Case 3: Debugging Cepat */}
           <div className="p-6 bg-white rounded-lg shadow-md text-center hover:bg-indigo-50 transition duration-300">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -86,7 +82,6 @@ const UseCase = () => {
             </p>
           </div>
 
-          {/* Use Case 4: Proyek Kolaboratif */}
           <div className="p-6 bg-white rounded-lg shadow-md text-center hover:bg-red-50 transition duration-300">
             <svg
               xmlns="http://www.w3.org/2000/svg"

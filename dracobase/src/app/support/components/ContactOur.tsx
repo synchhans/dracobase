@@ -2,14 +2,11 @@ export default function ContactOur() {
   return (
     <section className="py-24 bg-white min-h-1/2" id="contact">
       <div className="container px-6 mx-auto text-center">
-        {/* Judul */}
         <h2 className="text-6xl font-bold text-gray-800 mb-8">
           Hubungi Tim Dukungan Kami
         </h2>
 
-        {/* Form */}
         <form className="max-w-lg mx-auto space-y-4">
-          {/* Pilihan Masalah */}
           <select
             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             defaultValue="account"
@@ -23,7 +20,6 @@ export default function ContactOur() {
             <option value="other">Lainnya</option>
           </select>
 
-          {/* Input Nama dan Email (Satu Baris) */}
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <input
               type="text"
@@ -37,7 +33,6 @@ export default function ContactOur() {
             />
           </div>
 
-          {/* Tombol Kirim dan Teks Respons */}
           <div className="flex items-center justify-between">
             <button
               type="submit"

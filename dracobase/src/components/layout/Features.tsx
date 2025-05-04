@@ -8,14 +8,11 @@ const Features = () => {
       id="features"
     >
       <div className="container px-6 mx-auto text-center">
-        {/* Judul */}
         <h2 className="text-3xl font-bold text-gray-800 my-12">
           Mengapa Memilih Dracobase?
         </h2>
 
-        {/* Grid Features */}
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-          {/* Fitur 1 */}
           <div className="p-6 bg-gray-50 rounded-lg shadow-md text-center hover:bg-blue-50 transition duration-300">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -40,7 +37,6 @@ const Features = () => {
             </p>
           </div>
 
-          {/* Fitur 2 */}
           <div className="p-6 bg-gray-50 rounded-lg shadow-md text-center hover:bg-green-50 transition duration-300">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -65,7 +61,6 @@ const Features = () => {
             </p>
           </div>
 
-          {/* Fitur 3 */}
           <div className="p-6 bg-gray-50 rounded-lg shadow-md text-center hover:bg-indigo-50 transition duration-300">
             <svg
               xmlns="http://www.w3.org/2000/svg"

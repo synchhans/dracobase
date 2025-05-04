@@ -5,7 +5,6 @@ const Footer = () => {
   return (
     <footer className="py-12 bg-gray-900">
       <div className="container px-6 mx-auto text-center md:text-left">
-        {/* Logo dan Deskripsi */}
         <div className="flex flex-col items-center justify-between mb-8 space-y-4 md:flex-row md:space-y-0">
           <div className="flex items-center space-x-2">
             <span className="text-2xl font-bold text-blue-500">Dracobase</span>
@@ -14,7 +13,6 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* Navigasi Footer */}
           <div className="flex flex-col space-y-2 text-gray-400 md:flex-row md:space-y-0 md:space-x-6">
             <a href="#features" className="hover:text-blue-500 transition">
               Fitur
@@ -28,17 +26,13 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Garis Pemisah */}
         <hr className="border-gray-700 my-8" />
 
-        {/* Hak Cipta dan Media Sosial */}
         <div className="flex flex-col items-center justify-between space-y-4 md:flex-row md:space-y-0">
-          {/* Hak Cipta */}
           <p className="text-sm text-gray-400">
             &copy; 2025 Dracobase. All rights reserved.
           </p>
 
-          {/* Media Sosial */}
           <div className="flex space-x-4">
             <a
               href="https://facebook.com"

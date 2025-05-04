@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "intro.js/introjs.css";
 
 export const metadata: Metadata = {
-  title: "Dracobase: Instant Cloud Development Environtments",
+  title: "Dracobase: Platform Pemrograman",
   description: "berbasis AI, feedback Otomatis, debugging, untuk Mahasiswa.",
 };
 

@@ -55,13 +55,15 @@ const Hero = () => {
           <div className="marquee-content flex">
             {logos.map((logo, index) => (
               <Image
-                width={800}
-                height={600}
-                key={index}
                 src={logo}
                 alt={`Partner ${index + 1}`}
+                width={800}
+                height={600}
                 className="logo"
-                priority
+                key={index}
+                placeholder="blur"
+                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wQAAwAB/1h7bQAAAABJRU5ErkJggg=="
+                priority={index < 3}
               />
             ))}
           </div>

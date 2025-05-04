@@ -2,12 +2,10 @@ export default function FindHelp() {
   return (
     <section className="py-24 bg-gray-50 min-h-screen" id="help">
       <div className="container px-6 mx-auto text-center">
-        {/* Judul */}
         <h2 className="text-6xl font-bold text-gray-800 mb-6">
           Find the Help You Need
         </h2>
 
-        {/* Tombol Navigasi */}
         <div className="flex flex-wrap justify-center gap-2 mb-8 max-w-5xl mx-auto">
           {[
             "Your First Repository",
@@ -29,9 +27,7 @@ export default function FindHelp() {
           ))}
         </div>
 
-        {/* Card-Card */}
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-          {/* FAQ */}
           <div className="p-6 bg-white rounded-lg shadow-md text-center hover:bg-blue-50 transition duration-300">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -53,7 +49,6 @@ export default function FindHelp() {
             </p>
           </div>
 
-          {/* Docs */}
           <div className="p-6 bg-white rounded-lg shadow-md text-center hover:bg-green-50 transition duration-300">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -75,7 +70,6 @@ export default function FindHelp() {
             </p>
           </div>
 
-          {/* System Status */}
           <div className="p-6 bg-white rounded-lg shadow-md text-center hover:bg-indigo-50 transition duration-300">
             <svg
               xmlns="http://www.w3.org/2000/svg"
