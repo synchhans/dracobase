@@ -1,8 +1,12 @@
-import { deleteAccount, editAccount, getAccounts } from "../services/accountService.js";
+import {
+  deleteAccount,
+  editAccount,
+  getAccounts,
+} from "../services/accountService.js";
 
 export const getAccountController = async (req, res, next) => {
   try {
-    const account = await getAccounts();
+    const account = await getAccounts(req.user._id);
     return res.status(200).json({
       message: "Daftar account berhasil diambil.",
       data: account,
@@ -15,9 +19,9 @@ export const getAccountController = async (req, res, next) => {
 export const editAccountController = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { level, status } = req.body; 
+    const { level } = req.body;
 
-    const updatedAccount = await editAccount(id, level, status);
+    const updatedAccount = await editAccount(id, level);
     return res.status(200).json({
       message: "Account berhasil diperbarui.",
       data: updatedAccount,

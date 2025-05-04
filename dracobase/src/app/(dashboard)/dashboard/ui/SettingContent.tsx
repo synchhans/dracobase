@@ -1,3 +1,4 @@
+import ExpandableIconMenu from "@/app/(pengamat)/pengamat/ui/ExpandableIconMenu";
 import ErrorHandler from "@/components/common/ErrorHandler";
 import useGuest from "@/hooks/useGuest";
 import useLoginFormSubmit from "@/hooks/useLoginFormSubmit";
@@ -181,6 +182,7 @@ export default function SettingContent({ user }: { user: User }) {
           </div>
         </div>
       </div>
+      {user?.level === "pengamat" && <ExpandableIconMenu />}
     </div>
   );
 }

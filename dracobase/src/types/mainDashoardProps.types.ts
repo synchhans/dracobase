@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import { User } from "./user.types";
 
 interface ContentMap {
@@ -6,6 +5,12 @@ interface ContentMap {
 }
 
 export interface MainDashoardProps {
+  id6?: string;
+  id7?: string;
+  id8?: string;
+  id9?: string;
+  id10?: string;
+  id11?: string;
   user: User;
   contentMap: ContentMap;
 }

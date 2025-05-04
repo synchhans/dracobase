@@ -53,7 +53,7 @@ export default function LoginForm({ user, handleUpdateUser }: LoginFormProps) {
 
       <div className="space-y-4">
         <div>
-          <label className="block mb-2">First Name:</label>
+          <label className="block mb-2">Nama Depan:</label>
           <input
             type="text"
             value={firstName}
@@ -63,7 +63,7 @@ export default function LoginForm({ user, handleUpdateUser }: LoginFormProps) {
         </div>
 
         <div>
-          <label className="block mb-2">Last Name:</label>
+          <label className="block mb-2">Nama Belakang:</label>
           <input
             type="text"
             value={lastName}
@@ -73,13 +73,13 @@ export default function LoginForm({ user, handleUpdateUser }: LoginFormProps) {
         </div>
 
         <div>
-          <label className="block mb-2">Select Role:</label>
+          <label className="block mb-2">Pilih Role:</label>
           <select
             value={role}
             onChange={(e) => setRole(e.target.value)}
             className="w-full p-2 border rounded"
           >
-            <option value="">-- Select Role --</option>
+            <option value="">-- Pilih Role --</option>
             <option value="frontend">Frontend Developer</option>
             <option value="backend">Backend Developer</option>
             <option value="fullstack">Fullstack Developer</option>
@@ -87,13 +87,13 @@ export default function LoginForm({ user, handleUpdateUser }: LoginFormProps) {
         </div>
 
         <div>
-          <label className="block mb-2">Select Plan:</label>
+          <label className="block mb-2">Pilih Plan:</label>
           <select
             value={plan}
             onChange={(e) => setPlan(e.target.value)}
             className="w-full p-2 border rounded"
           >
-            <option value="">-- Select Plan --</option>
+            <option value="">-- Pilih Plan --</option>
             <option value="work">Work</option>
             <option value="personal">Personal</option>
             <option value="education">Education</option>
@@ -110,7 +110,7 @@ export default function LoginForm({ user, handleUpdateUser }: LoginFormProps) {
             : "bg-blue-500 text-white hover:bg-blue-600 cursor-pointer"
         }`}
       >
-        {isLoading ? "Saving..." : "Save Profile"}
+        {isLoading ? "Menyimpan..." : "Simpan Profile"}
       </button>
     </div>
   );

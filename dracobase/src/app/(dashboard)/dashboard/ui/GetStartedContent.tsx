@@ -1,3 +1,4 @@
+import ExpandableIconMenu from "@/app/(pengamat)/pengamat/ui/ExpandableIconMenu";
 import { User } from "@/types/user.types";
 import React, { useState } from "react";
 
@@ -17,7 +18,6 @@ export default function DocumentationPage({ user }: { user: User }) {
 
   return (
     <div className="h-[calc(100vh-73px)] overflow-y-hidden p-6">
-      {/* Header */}
       <header className="text-center mb-8">
         <h1 className="text-4xl font-bold text-gray-900">
           Dokumentasi Platform Pemrograman
@@ -27,9 +27,7 @@ export default function DocumentationPage({ user }: { user: User }) {
         </p>
       </header>
 
-      {/* Accordion Sections */}
       <div className="space-y-6">
-        {/* Section 1: Tentang Platform */}
         <div>
           <button
             className="w-full px-6 py-4 bg-white border border-gray-200 rounded-lg shadow-sm flex justify-between items-center cursor-pointer hover:bg-gray-100 transition-all"
@@ -143,7 +141,6 @@ export default function DocumentationPage({ user }: { user: User }) {
           </button>
           {activeSection === "features" && (
             <div className="mt-4 space-y-4">
-              {/* Sub-section: Code Editor Online */}
               <div>
                 <button
                   className="w-full px-6 py-4 bg-gray-50 border border-gray-200 rounded-lg shadow-sm flex justify-between items-center cursor-pointer hover:bg-gray-100 transition-all"
@@ -186,7 +183,6 @@ export default function DocumentationPage({ user }: { user: User }) {
                 )}
               </div>
 
-              {/* Sub-section: Feedback Otomatis */}
               <div>
                 <button
                   className="w-full px-6 py-4 bg-gray-50 border border-gray-200 rounded-lg shadow-sm flex justify-between items-center cursor-pointer hover:bg-gray-100 transition-all"
@@ -222,7 +218,6 @@ export default function DocumentationPage({ user }: { user: User }) {
                 )}
               </div>
 
-              {/* Sub-section: Debugging */}
               <div>
                 <button
                   className="w-full px-6 py-4 bg-gray-50 border border-gray-200 rounded-lg shadow-sm flex justify-between items-center cursor-pointer hover:bg-gray-100 transition-all"
@@ -261,6 +256,7 @@ export default function DocumentationPage({ user }: { user: User }) {
           )}
         </div>
       </div>
+      {user?.level === "pengamat" && <ExpandableIconMenu />}
     </div>
   );
 }

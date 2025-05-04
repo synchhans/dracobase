@@ -4,11 +4,33 @@ import { usePathname } from "next/navigation";
 import React, { useState, useEffect, useRef } from "react";
 import { FaBars } from "react-icons/fa";
 
-export default function MainDashboard({ user, contentMap }: MainDashoardProps) {
+export default function MainDashboard({
+  id6,
+  id7,
+  id8,
+  id9,
+  id10,
+  id11,
+  user,
+  contentMap,
+}: MainDashoardProps) {
   const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const checkIsMobile = () => {
+    setIsMobile(window.innerWidth <= 768);
+  };
+
+  useEffect(() => {
+    checkIsMobile();
+    window.addEventListener("resize", checkIsMobile);
+    return () => {
+      window.removeEventListener("resize", checkIsMobile);
+    };
+  }, []);
 
   const getContent = () => {
     const ContentComponent = contentMap[pathname];
@@ -41,22 +63,44 @@ export default function MainDashboard({ user, contentMap }: MainDashoardProps) {
 
   return (
     <div className="flex h-[calc(100vh-56px)]">
-      <button
-        ref={buttonRef}
-        className="md:hidden p-4 bg-transparent text-gray-700 fixed top-0 left-0 z-49 cursor-pointer"
-        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-      >
-        <FaBars className="text-xl" />
-      </button>
+      {isMobile && (
+        <button
+          ref={buttonRef}
+          className="p-4 bg-transparent text-gray-700 fixed top-0 left-0 z-49 cursor-pointer"
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+        >
+          <div id={id6}>
+            <div id={id7}>
+              <div id={id8}>
+                <div id={id9}>
+                  <div id={id10}>
+                    <div id={id11}>
+                      <FaBars className="text-xl" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </button>
+      )}
 
-      <div
-        ref={sidebarRef}
-        className={`w-64 h-[calc(100vh-56px)] bg-white shadow-lg border-r border-gray-200 transition-transform duration-300 ${
-          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0 md:relative fixed z-40`}
-      >
-        <SidebarDashboard user={user} />
-      </div>
+      {!isMobile && (
+        <div
+          ref={sidebarRef}
+          className={`w-64 h-[calc(100vh-56px)] bg-white shadow-lg border-r border-gray-200 transition-transform duration-300 md:translate-x-0 md:relative fixed z-40`}
+        >
+          <SidebarDashboard
+            user={user}
+            id6={id6}
+            id7={id7}
+            id8={id8}
+            id9={id9}
+            id10={id10}
+            id11={id11}
+          />
+        </div>
+      )}
 
       <div
         className={`flex-1 p-4 ${

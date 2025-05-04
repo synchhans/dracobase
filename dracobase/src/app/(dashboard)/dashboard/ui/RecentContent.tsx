@@ -1,18 +1,22 @@
 import useRecent from "@/hooks/useRecent";
-import { User } from "@/types/user.types";
 import { Recent } from "@/types/recent.types";
 import Image from "next/image";
 import { useState } from "react";
 import { FaFilter, FaSortAmountDownAlt, FaSortAmountUp } from "react-icons/fa";
 import ActionMenu from "@/components/ui/recent/ActionMenu";
 
-export default function RecentContent({ user }: { user: User }) {
+export default function RecentContent({
+  id1,
+  id2,
+}: {
+  id1: string;
+  id2: string;
+}) {
   const [sortBy, setSortBy] = useState<"latest" | "oldest">("latest");
   const [filterLanguage, setFilterLanguage] = useState<string>("");
   const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const { recents, deleteRecent } = useRecent();
-
   const sortedRecents = [...recents].sort((a, b) => {
     if (sortBy === "latest") {
       return (
@@ -37,7 +41,9 @@ export default function RecentContent({ user }: { user: User }) {
 
   return (
     <div className="p-4">
-      <h2 className="text-lg font-semibold mb-4">RECENT USER CONTENT</h2>
+      <h2 className="text-lg font-semibold mb-4" id={id1}>
+        RECENT USER CONTENT
+      </h2>
 
       {recents.length !== 0 ? (
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
@@ -151,7 +157,10 @@ export default function RecentContent({ user }: { user: User }) {
         <div></div>
       )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+        id={id2}
+      >
         {filteredRecents.length === 0 ? (
           <div className="col-span-full flex flex-col items-center justify-center text-gray-500 py-8 space-y-4">
             <p className="text-center">

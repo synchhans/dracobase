@@ -16,7 +16,7 @@ const app = express();
 app.use(
   cors({
     origin: process.env.FRONTEND_URL,
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
@@ -50,6 +50,9 @@ import workspaceRouter from "./routes/workspaceRouter.js";
 import recentRouter from "./routes/recentRouter.js";
 import progressRouter from "./routes/progressRouter.js";
 import aiRoutes from "./routes/aiRoutes.js";
+import notificationRouter from "./routes/notificationRoutes.js";
+import maintenanceRoutes from "./routes/maintenanceRouter.js";
+import pengamatRouter from "./routes/pengamatRouter.js";
 
 app.use("/api/auth", authRoutes);
 app.use("/api/dashboard", dashboardRouter);
@@ -60,6 +63,9 @@ app.use("/api/workspaces", workspaceRouter);
 app.use("/api/recent", recentRouter);
 app.use("/api/progress", progressRouter);
 app.use("/api/ai", aiRoutes);
+app.use("/api/notification", notificationRouter);
+app.use("/api/maintenance", maintenanceRoutes);
+app.use("/api/pengamat", pengamatRouter);
 
 app.use(errorHandler);
 

@@ -1,12 +1,11 @@
 import useRecent from "@/hooks/useRecent";
-import { User } from "@/types/user.types";
 import { Recent } from "@/types/recent.types";
 import Image from "next/image";
 import { useState } from "react";
 import { FaFilter, FaSortAmountDownAlt, FaSortAmountUp } from "react-icons/fa";
 import ActionMenu from "@/components/ui/recent/ActionMenu";
 
-export default function RecentMaster({ user }: { user: User }) {
+export default function RecentMaster() {
   const [sortBy, setSortBy] = useState<"latest" | "oldest">("latest");
   const [filterLanguage, setFilterLanguage] = useState<string>("");
   const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState(false);

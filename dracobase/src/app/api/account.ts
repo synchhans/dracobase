@@ -27,8 +27,7 @@ export const apiGetAccounts = async (): Promise<User[] | null> => {
 
 export const apiEditAccount = async (
   id: string,
-  level: string,
-  status: string
+  level: string
 ): Promise<any> => {
   try {
     const response = await fetch(`${API_URL}/${id}`, {
@@ -37,7 +36,7 @@ export const apiEditAccount = async (
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ level, status }),
+      body: JSON.stringify({ level }),
     });
 
     if (!response.ok) {

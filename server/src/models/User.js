@@ -54,7 +54,7 @@ const userSchema = new mongoose.Schema(
 
     level: {
       type: String,
-      enum: ["user", "admin"],
+      enum: ["user", "admin", "pengamat"],
       default: "user",
     },
 

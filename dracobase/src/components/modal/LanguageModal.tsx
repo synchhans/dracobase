@@ -7,9 +7,11 @@ import { toast } from "react-toastify";
 import CULanguageModal from "./CULanguageModal";
 
 export default function LanguageModal({
+  id2,
   role,
   userId,
 }: {
+  id2?: string;
   role: string;
   userId: string;
 }) {
@@ -114,6 +116,7 @@ export default function LanguageModal({
       <button
         className="inline-flex items-center gap-x-2 md:py-1 lg:py-2 px-4 rounded-md text-sm font-medium bg-blue-500 text-white hover:bg-blue-600 transition-colors cursor-pointer"
         onClick={openModal}
+        id={id2}
       >
         <FaCode className="w-5 h-5" />
         Pilih Bahasa Pemrograman
@@ -128,7 +131,6 @@ export default function LanguageModal({
             className="bg-white w-full max-w-lg sm:max-w-xl md:max-w-2xl p-6 sm:p-8 rounded-2xl shadow-2xl relative overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Header */}
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
                 Pilih Bahasa Pemrograman
@@ -141,16 +143,27 @@ export default function LanguageModal({
               </button>
             </div>
 
-            {role === "admin" && (
+            {role === "admin" || role === "pengamat" ? (
               <button
-                className="mb-5 px-4 py-2 bg-green-500 text-white text-sm rounded-md hover:bg-green-600 transition-colors"
-                onClick={() => setIsCModalOpen(true)}
+                className={`mb-5 px-4 py-2 text-sm rounded-md transition-colors ${
+                  role === "admin"
+                    ? "bg-green-500 text-white hover:bg-green-600"
+                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                }`}
+                onClick={
+                  role === "admin" ? () => setIsCModalOpen(true) : undefined
+                }
+                disabled={role === "pengamat"}
+                title={
+                  role === "pengamat"
+                    ? "Dibatasi oleh master. Hanya master yang bisa mengakses."
+                    : ""
+                }
               >
                 Tambah Bahasa Pemrograman
               </button>
-            )}
+            ) : null}
 
-            {/* Filter and Search */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
               <div className="flex flex-wrap gap-2">
                 {["popular", "frontend", "backend", "server", "browser"].map(
@@ -217,7 +230,7 @@ export default function LanguageModal({
                         </p>
                       </div>
                     </div>
-                    {role === "admin" && (
+                    {(role as "admin" | "pengamat") === "admin" && (
                       <div className="relative">
                         <button
                           className="text-gray-500 hover:text-gray-700 focus:outline-none"
@@ -230,12 +243,13 @@ export default function LanguageModal({
                         >
                           <FaEllipsisV className="w-5 h-5 cursor-pointer" />
                         </button>
+
                         {dropdownIndex === index && (
                           <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg z-10">
                             <ul className="py-1">
                               <li>
                                 <button
-                                  className="flex items-center gap-2 w-full px-4 py-2 text-sm text-blue-500 hover:bg-gray-100"
+                                  className="flex items-center gap-2 w-full px-4 py-2 text-sm text-blue-500 hover:bg-gray-100 cursor-pointer"
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     setDropdownIndex(null);
@@ -248,12 +262,55 @@ export default function LanguageModal({
                               </li>
                               <li>
                                 <button
-                                  className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-500 hover:bg-gray-100"
+                                  className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-500 hover:bg-gray-100 cursor-pointer"
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     setDropdownIndex(null);
                                     handleDeleteClick(language._id!);
                                   }}
+                                >
+                                  <FaTrash className="w-4 h-4" />
+                                  Hapus
+                                </button>
+                              </li>
+                            </ul>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {(role as "admin" | "pengamat") === "pengamat" && (
+                      <div className="relative">
+                        <button
+                          className="text-gray-500 hover:text-gray-700 focus:outline-none"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setDropdownIndex(
+                              dropdownIndex === index ? null : index
+                            );
+                          }}
+                        >
+                          <FaEllipsisV className="w-5 h-5 cursor-pointer" />
+                        </button>
+
+                        {dropdownIndex === index && (
+                          <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg z-10">
+                            <ul className="py-1">
+                              <li>
+                                <button
+                                  className="flex items-center gap-2 w-full px-4 py-2 text-sm text-blue-400 hover:bg-gray-100 cursor-not-allowed opacity-60"
+                                  disabled
+                                  title="Dibatasi oleh master"
+                                >
+                                  <FaEdit className="w-4 h-4" />
+                                  Edit
+                                </button>
+                              </li>
+                              <li>
+                                <button
+                                  className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-400 hover:bg-gray-100 cursor-not-allowed opacity-60"
+                                  disabled
+                                  title="Dibatasi oleh master"
                                 >
                                   <FaTrash className="w-4 h-4" />
                                   Hapus

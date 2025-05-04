@@ -29,13 +29,13 @@ export default function useAccount() {
     }
   };
 
-  const editAccount = async (id: string, level: string, status: string) => {
+  const editAccount = async (id: string, level: string) => {
     try {
-      const updatedAccount = await apiEditAccount(id, level, status);
+      const updatedAccount = await apiEditAccount(id, level);
       setAccounts((prevAccounts) => {
         if (!prevAccounts) return null;
         return prevAccounts.map((account) =>
-          account._id === id ? { ...account, level, status } : account
+          account._id === id ? { ...account, level } : account
         );
       });
       toast.success("Account updated successfully!");

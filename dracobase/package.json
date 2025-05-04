@@ -14,6 +14,8 @@
     "@monaco-editor/react": "^4.7.0",
     "emmet-monaco-es": "^5.5.0",
     "framer-motion": "^12.4.7",
+    "html2canvas": "^1.4.1",
+    "intro.js": "^7.2.0",
     "monaco-editor": "^0.52.2",
     "next": "15.2.0",
     "prismjs": "^1.30.0",
@@ -23,7 +25,8 @@
     "react-markdown": "^10.1.0",
     "react-syntax-highlighter": "^15.6.1",
     "react-toastify": "^11.0.5",
-    "remark-gfm": "^4.0.1"
+    "remark-gfm": "^4.0.1",
+    "swr": "^2.3.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

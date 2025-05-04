@@ -4,8 +4,8 @@ import { FaTimes } from "react-icons/fa";
 interface EditAccountModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (newLevel: string, newStatus: string) => void;
-  initialData: { level: string; status: string };
+  onSave: (newLevel: string) => void;
+  initialData: { level: string };
 }
 
 export default function EditAccountModal({
@@ -15,11 +15,9 @@ export default function EditAccountModal({
   initialData,
 }: EditAccountModalProps) {
   const [newLevel, setNewLevel] = useState(initialData.level);
-  const [newStatus, setNewStatus] = useState(initialData.status);
 
   useEffect(() => {
     setNewLevel(initialData.level);
-    setNewStatus(initialData.status);
   }, [initialData]);
 
   if (!isOpen) return null;
@@ -53,25 +51,8 @@ export default function EditAccountModal({
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           >
             <option value="user">User</option>
+            <option value="pengamat">Pengamat</option>
             <option value="admin">Admin</option>
-          </select>
-        </div>
-
-        <div className="mb-4">
-          <label
-            htmlFor="status"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Status
-          </label>
-          <select
-            id="status"
-            value={newStatus}
-            onChange={(e) => setNewStatus(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-          >
-            <option value="active">Active</option>
-            <option value="nonactive">Non-Active</option>
           </select>
         </div>
 
@@ -83,7 +64,7 @@ export default function EditAccountModal({
             Batal
           </button>
           <button
-            onClick={() => onSave(newLevel, newStatus)}
+            onClick={() => onSave(newLevel)}
             className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
             Simpan

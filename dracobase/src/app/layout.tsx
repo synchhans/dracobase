@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "../styles/globals.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "intro.js/introjs.css";
 
 export const metadata: Metadata = {
   title: "Dracobase: Instant Cloud Development Environtments",
